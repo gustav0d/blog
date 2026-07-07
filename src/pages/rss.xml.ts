@@ -12,13 +12,16 @@ export async function GET() {
 
   const items = posts
     .filter((post) => !post.data.draft)
-    .sort((a, b) => new Date(b.data.pubDate) - new Date(a.data.pubDate))
-    .map(({ data, slug, body }) => ({
-      link: `/blog/${slug}`,
+    .sort(
+      (a, b) =>
+        new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime(),
+    )
+    .map(({ data, body }) => ({
+      link: `/blog/${data.slug}`,
       title: data.title,
       description: data.description,
       pubDate: data.pubDate,
-      content: sanitizeHtml(parser.render(body), {
+      content: sanitizeHtml(parser.render(body || ''), {
         allowedTags: [
           'img',
           'a',

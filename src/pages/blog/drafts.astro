@@ -19,7 +19,7 @@ const draftPosts = await getCollection('blog', ({ data }) => data.draft);
       {
         draftPosts.map((post) => (
           <li>
-            <Link href={`/blog/${post.slug}`}>
+            <Link href={`/blog/${post.data.slug}`}>
               <p class='post-title'>{post.data.title}</p>
             </Link>
           </li>

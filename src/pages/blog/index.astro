@@ -7,8 +7,7 @@ import GoBackButton from '../../components/GoBackButton.astro';
 
 const posts = await getCollection('blog', ({ data }) => !data.draft);
 const postsSorted = posts.sort(
-  (a, b) =>
-    Math.floor(b.data.pubDate / 1000) - Math.floor(a.data.pubDate / 1000),
+  (a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime(),
 );
 ---
 
@@ -23,8 +22,8 @@ const postsSorted = posts.sort(
         postsSorted.map((post) => (
           <li>
             <p>
-              <Link href={`/blog/${post.slug}`}>
-                {post.data.pubDate.toISOString().split('T')[0]}{' '}
+              <Link href={`/blog/${post.data.slug}`}>
+                {post.data.pubDate?.toISOString().split('T')[0]}{' '}
                 {post.data.title}
               </Link>
             </p>

@@ -38,7 +38,7 @@ const run = async () => {
   if (Array.isArray(tags) && tags.length > 0) {
     const tagsFormatted = tags
       .map((tag) => slugify(tag))
-      .map((tag, i) => `  - ${tag}`)
+      .map((tag) => `  - ${tag}`)
       .join('\n');
 
     frontmatter += `\ntags:\n${tagsFormatted}`;

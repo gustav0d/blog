@@ -1,8 +1,12 @@
 import { SITE } from '../config';
-import type { CollectionEntry } from 'astro:content';
 import dayjs from 'dayjs';
 
-type Props = CollectionEntry<'blog'> & {
+type Props = {
+  data: {
+    title: string;
+    tags?: string[];
+    pubDate?: Date;
+  };
   tags?: boolean;
   date?: boolean;
 };

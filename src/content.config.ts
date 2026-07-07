@@ -5,15 +5,13 @@ import { rssSchema } from '@astrojs/rss';
 
 const blogCollection = defineCollection({
   loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/blog' }),
-  schema: z
-    .object({
-      title: z.string(),
-      pubDate: z.coerce.date(),
-      tags: z.array(z.string()).default([]).optional(),
-      draft: z.boolean().optional(),
-      slug: z.string(),
-    })
-    .extend(rssSchema.shape),
+  schema: z.object(rssSchema.shape).extend({
+    title: z.string(),
+    pubDate: z.coerce.date(),
+    tags: z.array(z.string()).default([]).optional(),
+    draft: z.boolean().optional(),
+    slug: z.string(),
+  }),
 });
 
 const listsCollection = defineCollection({
