@@ -62,5 +62,7 @@ export const GET: APIRoute = async () => {
   );
   const png = svgBufferToPngBuffer(svg);
 
-  return new Response(png, { headers: { 'Content-Type': 'image/png' } });
+  return new Response(new Uint8Array(png), {
+    headers: { 'Content-Type': 'image/png' },
+  });
 };

@@ -8,7 +8,7 @@ import GoBackButton from '../components/GoBackButton.astro';
 const posts = await getCollection('blog', ({ data }) => !data.draft);
 
 const tags = posts.reduce<{ [tag: string]: number }>((acc, post) => {
-  post.data.tags.forEach((tag: string) => {
+  post.data.tags?.forEach((tag: string) => {
     if (acc[tag]) {
       acc[tag]++;
     } else {
