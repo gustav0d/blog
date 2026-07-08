@@ -1,17 +1,14 @@
-import type { Element, Root, Text } from 'hast';
+import type { Element, Root } from 'hast';
 import { visit } from 'unist-util-visit';
-import { modifyChildren } from 'unist-util-modify-children';
 import slugify from 'slugify';
 
-const modifyHeading = (url: string) =>
-  modifyChildren((node) => {
-    if (node.type !== 'text') {
-      return;
+const modifyHeading = (heading: Element, url: string) => {
+  for (const child of heading.children) {
+    if (child.type !== 'text') {
+      continue;
     }
 
-    const text = (node as Text).value;
-    const element = node as unknown as Element;
-
+    const element = child as unknown as Element;
     delete element.position;
     element.type = 'element';
     element.tagName = 'a';
@@ -19,13 +16,9 @@ const modifyHeading = (url: string) =>
       class: 'heading-link',
       href: url,
     };
-    element.children = [
-      {
-        type: 'text',
-        value: text,
-      },
-    ];
-  });
+    element.children = [{ type: 'text', value: child.value }];
+  }
+};
 
 export function rehypePluginLinkHeading() {
   return function (tree: Root) {
@@ -40,7 +33,7 @@ export function rehypePluginLinkHeading() {
           replacement: '-',
           strict: true,
         });
-        modifyHeading(`#${slug}`)(node);
+        modifyHeading(node, `#${slug}`);
       }
     });
   };

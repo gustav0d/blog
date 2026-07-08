@@ -1,6 +1,5 @@
-import type { Root } from 'hast';
+import type { Element, Root } from 'hast';
 import { visit } from 'unist-util-visit';
-import { h } from 'hastscript';
 
 function removeFieldFromTree(node: unknown, fieldToRemove: string) {
   if (Array.isArray(node)) {
@@ -26,7 +25,12 @@ export function rehypePluginTableWrapper() {
       const tableNode = structuredClone(node);
       removeFieldFromTree(tableNode, 'position');
 
-      const wrapper = h('div', { className: 'table-wrapper' }, [tableNode]);
+      const wrapper: Element = {
+        type: 'element',
+        tagName: 'div',
+        properties: { className: ['table-wrapper'] },
+        children: [tableNode],
+      };
       parent.children.splice(index, 1, wrapper);
     });
   };
