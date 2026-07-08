@@ -1,7 +1,6 @@
 import { defineConfig } from 'astro/config';
 import { unified } from '@astrojs/markdown-remark';
 import sitemap from '@astrojs/sitemap';
-import react from '@astrojs/react';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import rehypePrettyCode from 'rehype-pretty-code';
@@ -49,7 +48,6 @@ export default defineConfig({
         }
       },
     }),
-    react(),
   ],
   output: 'static',
   markdown: {
