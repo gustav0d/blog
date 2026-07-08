@@ -11,4 +11,17 @@ const externalProps = isExternal
   : {};
 ---
 
-<a {...externalProps} href={href}><slot /></a>
+<a {...externalProps} href={href} class:list={{ external: isExternal }}
+  ><slot /></a
+>
+
+<style>
+  a.external::after {
+    content: '↗';
+    display: inline-block;
+    margin-left: 0.2em;
+    font-family: var(--font-sans);
+    font-size: 0.75em;
+    transform: translateY(-0.05em);
+  }
+</style>

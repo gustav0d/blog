@@ -3,26 +3,10 @@ import { GITHUB_REPO_URL } from '../config';
 import Link from './Link.astro';
 
 const navLinks = [
-  {
-    title: 'All my links',
-    href: '/contact',
-    isExternal: true,
-  },
-  {
-    title: 'Tags',
-    href: '/tags',
-    isExternal: false,
-  },
-  {
-    title: 'GitHub',
-    href: GITHUB_REPO_URL,
-    isExternal: true,
-  },
-  {
-    title: 'RSS',
-    href: '/rss.xml',
-    isExternal: true,
-  },
+  { title: 'All my links', href: '/contact', isExternal: false },
+  { title: 'Tags', href: '/tags', isExternal: false },
+  { title: 'GitHub', href: GITHUB_REPO_URL, isExternal: true },
+  { title: 'RSS', href: '/rss.xml', isExternal: false },
 ];
 ---
 
@@ -49,20 +33,30 @@ const navLinks = [
 
 <style>
   footer {
-    border-top: 1px solid rgba(0, 0, 0, 0.2);
+    border-top: 0.5px solid var(--border);
     display: flex;
     align-items: flex-end;
     flex-wrap: wrap-reverse;
     justify-content: space-between;
-    margin-top: var(--spacing-4x);
-    padding-top: var(--spacing);
+    margin-top: var(--sp-8);
+    padding: var(--sp-4) 0 var(--sp-8);
+  }
+
+  footer p,
+  footer :global(a) {
+    font-size: 11px;
+    color: var(--ink-500);
+  }
+
+  footer :global(a):hover {
+    color: var(--ink-900);
   }
 
   @media screen and (max-width: 425px) {
     footer {
       flex-direction: column-reverse;
       align-items: center;
-      gap: var(--spacing);
+      gap: var(--sp-2);
     }
 
     footer * {
@@ -74,6 +68,6 @@ const navLinks = [
   footer nav ul {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--spacing-2x);
+    gap: var(--sp-4);
   }
 </style>

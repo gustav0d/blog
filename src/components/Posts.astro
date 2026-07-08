@@ -1,49 +1,64 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 
-import Link from './Link.astro';
+import PostMeta from './PostMeta.astro';
 
 interface Props {
   posts: CollectionEntry<'blog'>[];
 }
 
 const { posts } = Astro.props;
+
+const sorted = posts.sort(
+  (a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime(),
+);
 ---
 
 <section class='posts'>
   <slot />
-  <ul>
+  <div>
     {
-      posts
-        .sort(
-          (a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime(),
-        )
-        .map((post) => (
-          <li>
-            <p>{post.data.pubDate.toISOString().split('T')[0]}</p>
-            <Link href={`/blog/${post.data.slug}`}>
-              <p class='post-title'>{post.data.title}</p>
-            </Link>
-          </li>
-        ))
+      sorted.map((post) => (
+        <a class='row' href={`/blog/${post.data.slug}`}>
+          <PostMeta
+            tag={post.data.tags?.[0]}
+            items={[post.data.pubDate.toISOString().split('T')[0]]}
+          />
+          <p class='title'>{post.data.title}</p>
+        </a>
+      ))
     }
-  </ul>
+  </div>
 </section>
 
 <style>
-  .posts ul {
+  .posts > div {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing);
   }
 
-  .posts ul li {
-    display: flex;
-    justify-content: space-between;
-    column-gap: var(--spacing-8x);
+  .row {
+    display: block;
+    padding: var(--sp-5) 0;
+    border-bottom: 0.5px solid var(--border);
   }
 
-  .posts :global(a) {
-    flex: 1;
+  .row:last-child {
+    border-bottom: none;
+  }
+
+  .title {
+    font-family: var(--font-serif);
+    font-size: 22px;
+    line-height: 1.2;
+    color: var(--ink-900);
+    margin-top: var(--sp-2);
+    text-align: left;
+  }
+
+  .row:hover .title {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 0.5px;
   }
 </style>

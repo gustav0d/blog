@@ -8,6 +8,7 @@ import path from 'path';
 import Link from '../../../components/Link.astro';
 import Layout from '../../../layout/Layout.astro';
 import GoBackButton from '../../../components/GoBackButton.astro';
+import Tag from '../../../components/Tag.astro';
 import { GITHUB_REPO_URL, SITE } from '../../../config';
 
 type GitLogCommit = DefaultLogFields & ListLogLine;
@@ -72,37 +73,55 @@ const readingTime = remarkPluginFrontmatter.readingTime;
 <Layout
   ogImage={`/blog/${post.data.slug}/og.png`}
   head={{ title: `${post.data.title} | ${SITE.title}` }}
-  customLang={post.data.tags?.includes('pt-br') ? 'pt-BR' : 'en'}>
+  customLang={post.data.tags?.includes('pt-br') ? 'pt-BR' : 'en'}
+  showNavbar={false}>
   <GoBackButton />
 
   <section class='content'>
     <section class='header'>
       <section>
-        <h1>{post.data.title}</h1>
-        <p>
-          {date}
-          -
-          <span>
-            {dayjs(lastCommit?.date).format('YYYY-MM-DD HH:mm')}
-            (<Link
-              href={`${GITHUB_REPO_URL}/commit/${lastCommit?.hash.slice(0, 7)}`}
-              isExternal>{lastCommit?.hash.slice(0, 7)}</Link
-            >),
-          </span>
-          {readingTime ? <span>{readingTime.text}</span> : null}
-          <br />
+        <div class='meta'>
           {
-            (post.data.tags || []).map((tag, i) => (
-              <span>
-                <Link href={`/tag/${tag}`}>#{tag}</Link>
-                {i < (post.data.tags || []).length - 1 ? ',' : ''}
-              </span>
+            (post.data.tags || []).map((tag) => (
+              <Link href={`/tag/${tag}`}>
+                <Tag uppercase>{tag}</Tag>
+              </Link>
             ))
           }
-        </p>
+          <span class='meta-line'>
+            <span>{date}</span>
+            {
+              readingTime && (
+                <>
+                  <span class='dot' aria-hidden>
+                    ·
+                  </span>
+                  <span>{readingTime.text}</span>
+                </>
+              )
+            }
+            {
+              lastCommit && (
+                <>
+                  <span class='dot' aria-hidden>
+                    ·
+                  </span>
+                  <span>
+                    <Link
+                      href={`${GITHUB_REPO_URL}/commit/${lastCommit.hash.slice(0, 7)}`}
+                      isExternal>
+                      {lastCommit.hash.slice(0, 7)}
+                    </Link>
+                  </span>
+                </>
+              )
+            }
+          </span>
+        </div>
+        <h1>{post.data.title}</h1>
       </section>
 
-      <article>
+      <article class='prose'>
         {
           tableOfContents.length > 0 ? (
             <details class='toc--wrapper' open>
@@ -128,30 +147,48 @@ const readingTime = remarkPluginFrontmatter.readingTime;
     </section>
   </section>
 
-  <style is:global>
-    .header {
-      display: flex;
-      flex-direction: column;
-      gap: var(--spacing-2x);
-    }
-
+  <style>
     .content {
       position: relative;
       display: flex;
-      gap: var(--spacing-4x);
+      gap: var(--sp-8);
       flex-direction: column;
     }
 
-    .toc {
-      gap: var(--spacing-2x);
-      padding: var(--spacing-2x);
+    .header {
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-3);
+      max-width: 34rem;
+      padding-bottom: var(--sp-6);
+      border-bottom: 0.5px solid var(--border);
+    }
+
+    .meta {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: var(--sp-2);
+    }
+
+    .meta-line {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-2);
+      font-size: 11px;
+      color: var(--ink-500);
+    }
+
+    .meta .dot {
+      color: var(--ink-300);
     }
 
     .toc--wrapper {
-      background: #f5f5f5;
+      background: var(--codeblock-bg);
       width: 100%;
       position: relative;
-      padding: var(--spacing);
+      padding: var(--sp-2);
+      font-size: 13px;
     }
 
     @media screen and (min-width: 1024px) {
@@ -163,147 +200,21 @@ const readingTime = remarkPluginFrontmatter.readingTime;
       }
     }
 
-    .toc summary {
+    .toc {
+      padding: var(--sp-4);
+    }
+
+    .toc--wrapper summary {
       cursor: pointer;
-    }
-
-    .toc summary h2 {
-      display: inline;
-    }
-
-    .toc ul li p {
-      text-align: left;
+      color: var(--ink-700);
     }
 
     .toc ul {
       margin-left: 0;
     }
 
-    .toc h2 {
-      border-bottom: none;
-    }
-
-    article {
-      display: flex;
-      flex-direction: column;
-      gap: var(--spacing);
-    }
-
-    article ul {
-      display: flex;
-      flex-direction: column;
-      gap: var(--spacing);
-      margin-left: var(--spacing-4x);
-    }
-
-    article ol li {
-      list-style-type: decimal;
-      margin-left: var(--spacing-4x);
-    }
-
-    article ul li {
-      list-style-type: disc;
-    }
-
-    article code {
-      border: 1px solid var(--color-primary);
-      padding: 0 4px;
-      text-wrap: wrap;
-      word-break: break-all;
-    }
-
-    article img {
-      width: 100%;
-    }
-
-    article blockquote {
-      border-left: 2px solid var(--color-primary);
-      padding: var(--spacing) var(--spacing-2x);
-      background-color: #f5f5f5;
-    }
-
-    .tags {
-      display: flex;
-      column-gap: var(--spacing);
-    }
-
-    [data-rehype-pretty-code-title] {
-      color: var(--color-white);
-      padding: var(--spacing);
-    }
-    [data-rehype-pretty-code-figure] code {
-      color: var(--color-white);
-      padding: var(--spacing);
-      font-size: var(--font-size-md);
-      overflow-x: auto;
-      background-color: var(--color-white);
-      border: 1px solid var(--color-primary);
-      border-radius: var(--border-radius);
-      margin: var(--spacing) 0;
-      white-space: pre-wrap;
-      text-wrap: nowrap;
-    }
-
-    code {
-      counter-reset: line;
-    }
-
-    code > [data-line]::before {
-      counter-increment: line;
-      content: counter(line);
-
-      /* Other styling */
-      display: inline-block;
-      width: 1rem;
-      margin-right: 2rem;
-      text-align: right;
-      color: gray;
-    }
-
-    code[data-line-numbers-max-digits='2'] > [data-line]::before {
-      width: 2rem;
-    }
-
-    code[data-line-numbers-max-digits='3'] > [data-line]::before {
-      width: 3rem;
-    }
-
-    /* TODO: Why is KaTeX duplicating the code */
-    .katex-html {
-      display: none;
-    }
-
-    .table-wrapper {
-      overflow-x: auto;
-    }
-
-    table {
-      overflow-x: auto;
-      border: 1px solid var(--color-primary);
-      border-collapse: collapse;
-    }
-
-    table tr {
-      border: 1px solid var(--color-primary);
-    }
-
-    table tr:last-child {
-      border-bottom: none;
-    }
-
-    table tr:nth-child(2n) {
-      background-color: rgba(0, 0, 0, 0.1);
-    }
-
-    table th {
-      font-weight: bold;
-      background-color: var(--color-primary);
-      color: var(--color-white);
-    }
-
-    table th,
-    table td {
-      padding: var(--spacing) var(--spacing-2x);
+    .toc ul li p {
+      text-align: left;
     }
   </style></Layout
 >

@@ -23,22 +23,22 @@ const links = [
 ---
 
 <Layout>
-  <h1>Dantas' blog</h1>
   <section class='description'>
     <p>
       I'm a {year} year old software engineer from Brazil, with interests in software
       architecture, distributed systems, running, literature and philosophy. If you
-      want to reach me, feel free to contact on <Link href={TWITTER_URL}
-        >X/Twitter</Link
+      want to reach me, feel free to contact on <Link
+        href={TWITTER_URL}
+        isExternal>X/Twitter</Link
       > or via
       <Link href='mailto:gusdantas15@gmail.com'> email</Link>.
     </p>
     <p>
       If you want to see what I'm doing right now, you can check out my
       <Link href='/now'>/now</Link> page. On my
-      <Link href={GITHUB_PROFILE_URL}>GitHub profile</Link>
+      <Link href={GITHUB_PROFILE_URL} isExternal>GitHub profile</Link>
       you can find all the repositories that I'm working on, and on my
-      <Link href={GITHUB_REPO_URL}>blog repository</Link>
+      <Link href={GITHUB_REPO_URL} isExternal>blog repository</Link>
       you can find the source code of this blog.
     </p>
     <p>
@@ -69,23 +69,17 @@ const links = [
   </section>
   <section class='posts'>
     <h2>Posts</h2>
-    <ul>
+    <div>
       {
         postsSorted.slice(0, 5).map((post) => (
-          <li>
-            <p>
-              <Link href={`/blog/${post.data.slug}`}>
-                {post.data.pubDate?.toISOString().split('T')[0]}{' '}
-                {post.data.title}
-              </Link>
-            </p>
-          </li>
+          <a class='row' href={`/blog/${post.data.slug}`}>
+            <p class='date'>{post.data.pubDate?.toISOString().split('T')[0]}</p>
+            <p class='title'>{post.data.title}</p>
+          </a>
         ))
       }
-      <li>
-        <Link href='/blog'>See all posts...</Link>
-      </li>
-    </ul>
+    </div>
+    <Link href='/blog'>See all posts...</Link>
   </section>
 </Layout>
 
@@ -93,34 +87,55 @@ const links = [
   .description {
     display: flex;
     flex-direction: column;
-    row-gap: var(--spacing-2x);
+    row-gap: var(--sp-4);
   }
 
-  .posts ul {
+  .posts {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing);
+    gap: var(--sp-4);
   }
 
-  .posts :global(a) {
-    flex: 1;
+  .posts > div {
     display: flex;
-    gap: var(--spacing);
+    flex-direction: column;
+  }
+
+  .row {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--sp-6);
+    padding: var(--sp-3) 0;
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .date {
+    font-size: 11px;
+    color: var(--ink-500);
+    white-space: nowrap;
+  }
+
+  .title {
+    font-family: var(--font-serif);
+    font-size: 18px;
+    color: var(--ink-900);
+  }
+
+  .row:hover .title {
     text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 0.5px;
   }
 
   @media screen and (max-width: 425px) {
-    .posts ul {
-      gap: var(--spacing-2x);
-    }
-
-    .posts ul li {
+    .row {
       flex-direction: column;
+      gap: var(--sp-1);
     }
   }
 
   .links ul li {
-    margin-left: var(--spacing-2x);
+    margin-left: var(--sp-4);
     list-style-type: disc;
   }
 </style>

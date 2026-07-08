@@ -9,6 +9,7 @@ import satori from 'satori';
 import type { SatoriOptions } from 'satori';
 
 import { og } from '../../../components/og';
+import { ogFonts } from '../../../lib/og-fonts';
 
 export const getStaticPaths = (async () => {
   const lists = await getCollection('lists');
@@ -27,45 +28,11 @@ export const getStaticPaths = (async () => {
 
 type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 
-// TODO: Improve this
-const loadFonts = async () => {
-  const merriweatherRegularFontFile = await fetch(
-    'https://www.1001fonts.com/download/font/merriweather.regular.ttf',
-  );
-  const merriweatherRegularFont =
-    await merriweatherRegularFontFile.arrayBuffer();
-
-  const merriweatherBoldFontFile = await fetch(
-    'https://www.1001fonts.com/download/font/merriweather.bold.ttf',
-  );
-  const merriweatherBoldFont = await merriweatherBoldFontFile.arrayBuffer();
-
-  return {
-    merriweatherRegularFont,
-    merriweatherBoldFont,
-  };
-};
-
-const { merriweatherRegularFont, merriweatherBoldFont } = await loadFonts();
-
 const options: SatoriOptions = {
   width: 1200,
   height: 630,
   embedFont: true,
-  fonts: [
-    {
-      name: 'Merriweather',
-      data: merriweatherRegularFont,
-      weight: 400,
-      style: 'normal',
-    },
-    {
-      name: 'Merriweather',
-      data: merriweatherBoldFont,
-      weight: 700,
-      style: 'normal',
-    },
-  ],
+  fonts: ogFonts,
 };
 
 const svgBufferToPngBuffer = (svg: string) => {
