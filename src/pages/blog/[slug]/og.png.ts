@@ -1,4 +1,8 @@
-import type { APIRoute } from 'astro';
+import type {
+  APIContext,
+  GetStaticPaths,
+  InferGetStaticPropsType,
+} from 'astro';
 import { getCollection } from 'astro:content';
 import { Resvg } from '@resvg/resvg-js';
 import satori from 'satori';
@@ -6,16 +10,18 @@ import type { SatoriOptions } from 'satori';
 
 import { post } from './_post';
 
-export const getStaticPaths = async () => {
+export const getStaticPaths = (async () => {
   const posts = await getCollection('blog');
 
   return posts.map((post) => ({
     params: {
-      slug: post.slug,
+      slug: post.data.slug,
     },
     props: post,
   }));
-};
+}) satisfies GetStaticPaths;
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 
 // TODO: Improve this
 const loadFonts = async () => {
@@ -64,9 +70,11 @@ const svgBufferToPngBuffer = (svg: string) => {
   return png.asPng();
 };
 
-export const GET: APIRoute = async ({ props }) => {
+export const GET = async ({ props }: APIContext<Props>) => {
   const svg = await satori(post(props), options);
   const png = svgBufferToPngBuffer(svg);
 
-  return new Response(png, { headers: { 'Content-Type': 'image/png' } });
+  return new Response(new Uint8Array(png), {
+    headers: { 'Content-Type': 'image/png' },
+  });
 };

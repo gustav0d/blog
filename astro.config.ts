@@ -1,6 +1,6 @@
 import { defineConfig } from 'astro/config';
+import { unified } from '@astrojs/markdown-remark';
 import sitemap from '@astrojs/sitemap';
-import react from '@astrojs/react';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import rehypePrettyCode from 'rehype-pretty-code';
@@ -48,24 +48,25 @@ export default defineConfig({
         }
       },
     }),
-    react(),
   ],
   output: 'static',
   markdown: {
     syntaxHighlight: false,
-    remarkPlugins: [remarkMath, remarkPluginReadingTime],
-    rehypePlugins: [
-      rehypeKatex,
-      [
-        rehypePrettyCode,
-        {
-          theme: 'github-light',
-          keepBackground: false,
-        },
+    processor: unified({
+      remarkPlugins: [remarkMath, remarkPluginReadingTime],
+      rehypePlugins: [
+        rehypeKatex,
+        [
+          rehypePrettyCode,
+          {
+            theme: 'github-light',
+            keepBackground: false,
+          },
+        ],
+        rehypePluginLinkHeading,
+        rehypePluginTableWrapper,
       ],
-      rehypePluginLinkHeading,
-      rehypePluginTableWrapper,
-    ],
+    }),
   },
   vite: {
     optimizeDeps: {

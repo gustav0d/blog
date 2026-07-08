@@ -7,8 +7,7 @@ import { GITHUB_REPO_URL, TWITTER_URL, GITHUB_PROFILE_URL } from '../config';
 
 const posts = await getCollection('blog', ({ data }) => !data.draft);
 const postsSorted = posts.sort(
-  (a, b) =>
-    Math.floor(b.data.pubDate / 1000) - Math.floor(a.data.pubDate / 1000),
+  (a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime(),
 );
 
 const year = new Date().getFullYear() - 2004;
@@ -75,7 +74,7 @@ const links = [
         postsSorted.slice(0, 5).map((post) => (
           <li>
             <p>
-              <Link href={`/blog/${post.slug}`}>
+              <Link href={`/blog/${post.data.slug}`}>
                 {post.data.pubDate?.toISOString().split('T')[0]}{' '}
                 {post.data.title}
               </Link>

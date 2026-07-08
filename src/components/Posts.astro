@@ -16,14 +16,12 @@ const { posts } = Astro.props;
     {
       posts
         .sort(
-          (a, b) =>
-            Math.floor(b.data.pubDate / 1000) -
-            Math.floor(a.data.pubDate / 1000),
+          (a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime(),
         )
         .map((post) => (
           <li>
             <p>{post.data.pubDate.toISOString().split('T')[0]}</p>
-            <Link href={`/blog/${post.slug}`}>
+            <Link href={`/blog/${post.data.slug}`}>
               <p class='post-title'>{post.data.title}</p>
             </Link>
           </li>

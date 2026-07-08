@@ -1,5 +1,5 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 import dayjs from 'dayjs';
 import simpleGit, { type DefaultLogFields, type ListLogLine } from 'simple-git';
@@ -21,19 +21,21 @@ export async function getStaticPaths() {
   const posts = await getCollection('blog');
 
   const postsMapped = posts.map(async (post) => {
-    const file = path.join(process.cwd(), 'src', 'content', 'blog', post.id);
+    const file = post.filePath && path.join(process.cwd(), post.filePath);
 
     let lastCommit: GitLogCommit | null = null;
     try {
-      const log = await git.log({ file });
-      lastCommit = log.latest;
+      if (file) {
+        const log = await git.log({ file });
+        lastCommit = log.latest;
+      }
     } catch (err) {
       console.log(err);
     }
 
     return {
       params: {
-        slug: post.slug,
+        slug: post.data.slug,
       },
       props: {
         lastCommit,
@@ -52,7 +54,7 @@ export async function getStaticPaths() {
 }
 
 const { post, lastCommit } = Astro.props;
-const { Content, headings, remarkPluginFrontmatter } = await post.render();
+const { Content, headings, remarkPluginFrontmatter } = await render(post);
 
 const date = dayjs(post.data.pubDate).format('YYYY-MM-DD HH:mm');
 
@@ -68,7 +70,7 @@ const readingTime = remarkPluginFrontmatter.readingTime;
 ---
 
 <Layout
-  ogImage={`/blog/${post.slug}/og.png`}
+  ogImage={`/blog/${post.data.slug}/og.png`}
   head={{ title: `${post.data.title} | ${SITE.title}` }}
   customLang={post.data.tags?.includes('pt-br') ? 'pt-BR' : 'en'}>
   <GoBackButton />

@@ -1,13 +1,22 @@
 ---
 import Layout from '../layout/Layout.astro';
 import GoBackButton from '../components/GoBackButton.astro';
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import dayjs from 'dayjs';
 
 const til = await getCollection('til');
 const sortedTil = til.sort(
-  (a, b) =>
-    Math.floor(b.data.createdAt / 1000) - Math.floor(a.data.createdAt / 1000),
+  (a, b) => b.data.createdAt.getTime() - a.data.createdAt.getTime(),
+);
+
+const items = await Promise.all(
+  sortedTil.map(async (item) => {
+    const createdAt = dayjs(item.data.createdAt).format(
+      'YYYY/MM/DD ddd [-] hh:mm A',
+    );
+    const { Content } = await render(item);
+    return { item, createdAt, Content };
+  }),
 );
 ---
 
@@ -19,17 +28,13 @@ const sortedTil = til.sort(
   </div>
   <ul>
     {
-      sortedTil.map(async (item, i) => {
-        const createdAt = dayjs(item.data.createdAt).format(
-          'YYYY/MM/DD ddd [-] hh:mm A',
-        );
-        const { Content } = await item.render();
+      items.map(({ item, createdAt, Content }, i) => {
         return (
           <li>
             <p>{i + 1}.</p>
             <div class='content'>
-              <a href={`#${item.slug}`}>
-                <p class='title' id={item.slug}>
+              <a href={`#${item.data.slug}`}>
+                <p class='title' id={item.data.slug}>
                   <span>{item.data.title}</span>
                   <span>{createdAt}</span>
                 </p>
