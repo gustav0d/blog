@@ -1,14 +1,21 @@
 ---
-import '@fontsource/instrument-sans';
-import '@fontsource/instrument-serif';
+import '@fontsource/instrument-sans/400.css';
+import '@fontsource/instrument-sans/400-italic.css';
+import '@fontsource/instrument-sans/500.css';
+import '@fontsource/cormorant/400.css';
+import '@fontsource/cormorant/600.css';
+import '@fontsource/jetbrains-mono/400.css';
+import '../styles/global.css';
 import { ClientRouter } from 'astro:transitions';
 
 import Footer from '../components/Footer.astro';
+import Navbar from '../components/Navbar.astro';
 import { SITE } from '../config';
 
 export interface Props {
   ogImage?: string;
   customLang?: string;
+  showNavbar?: boolean;
   head?: {
     title?: string;
     description?: string;
@@ -22,6 +29,7 @@ const {
     description: SITE.description,
   },
   customLang = 'en',
+  showNavbar = true,
 } = Astro.props;
 
 const ogURL = new URL(ogImage, Astro.url.origin).href;
@@ -71,123 +79,12 @@ const rssFeedURL = new URL('rss.xml', Astro.site).href;
     <ClientRouter />
   </head>
   <body>
-    <main>
-      <slot />
-    </main>
-    <Footer />
+    <div class='wrap'>
+      {showNavbar && <Navbar />}
+      <main>
+        <slot />
+      </main>
+      <Footer />
+    </div>
   </body>
 </html>
-
-<style is:global>
-  :root {
-    --color-primary: rgba(0, 0, 0);
-    --color-white: rgba(255, 255, 255, 255);
-
-    --font-size-2sm: 0.625rem;
-    --font-size-sm: 0.75rem;
-    --font-size-md: 1rem;
-    --font-size-xl: 1.5rem;
-    --font-size-2xl: 1.75rem;
-
-    --spacing: 8px;
-    --spacing-2x: 16px;
-    --spacing-4x: 32px;
-    --spacing-8x: 64px;
-  }
-
-  *,
-  *::after,
-  *::before {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-
-  html,
-  body {
-    font-family: 'Instrument Sans', sans-serif;
-    font-weight: 300;
-    height: 100%;
-    line-height: 1.5;
-    list-style-type: none;
-    font-size: 16px;
-    display: flex;
-    flex-direction: column;
-    margin: 0 auto;
-    width: 80vw;
-  }
-
-  body {
-    padding-top: var(--spacing-2x);
-  }
-
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    font-family: 'Instrument Serif', serif;
-    letter-spacing: 0.04em;
-  }
-
-  h1 {
-    font-size: var(--font-size-2xl);
-  }
-
-  h2 {
-    font-size: var(--font-size-xl);
-  }
-
-  p,
-  li {
-    text-align: justify;
-  }
-
-  li {
-    list-style-type: none;
-  }
-
-  main {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-4x);
-    position: relative;
-  }
-
-  @media screen and (min-width: 769px) {
-    body {
-      width: 40vw;
-    }
-  }
-
-  .heading-link {
-    text-decoration: none;
-    color: var(--color-black);
-  }
-
-  .heading-link:hover {
-    opacity: 0.65;
-  }
-
-  .heading-link::after {
-    content: '\00B6';
-    margin-left: 0.5rem;
-    opacity: 0;
-    transition: all 250ms ease-in-out;
-  }
-
-  .heading-link:hover::after {
-    opacity: 1;
-  }
-
-  strong {
-    font-weight: bold;
-  }
-
-  /* TODO: Why is KaTeX duplicating the code */
-  .katex-html {
-    display: none;
-  }
-</style>

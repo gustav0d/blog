@@ -54,35 +54,36 @@ const items = await Promise.all(
   ul {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing);
+    gap: var(--sp-2);
   }
 
   li {
     display: flex;
-    gap: var(--spacing);
+    gap: var(--sp-2);
   }
 
   li .content {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: var(--sp-1);
     width: 100%;
   }
 
   .title {
     display: flex;
     justify-content: space-between;
-    gap: var(--spacing-2x);
+    gap: var(--sp-4);
+    color: var(--ink-900);
   }
 
   li:not(:first-child) {
-    border-top: 1px solid #000;
-    padding-top: var(--spacing);
+    border-top: 0.5px solid var(--border);
+    padding-top: var(--sp-2);
   }
 
   section.article :global(li) {
     list-style-type: initial;
-    margin-left: var(--spacing-2x);
+    margin-left: var(--sp-4);
   }
 
   section.article :global(pre) {
