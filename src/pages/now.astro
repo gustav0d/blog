@@ -34,20 +34,19 @@ const { lastCommit } = Astro.props;
 ---
 
 <Layout>
-  <GoBackButton />
   <section>
     <h1>Now</h1>
     <p>Last update: {dayjs(lastCommit?.date).format('YYYY-MM-DD HH:mm')}</p>
   </section>
-  <article>
+  <article class='prose'>
     <section>
       <h2>What am I coding?</h2>
       <p>
         I'm currently working as a software developer at
-        <Link href='https://beyondcompany.com.br/'> Beyond Co</Link>.
+        <Link href='https://beyondcompany.com.br/' isExternal> Beyond Co</Link>.
       </p>
       <p>
-        I <Link href={TWITTER_URL}>learn in public</Link>
+        I <Link href={TWITTER_URL} isExternal>learn in public</Link>
         and I also participate on tech communities on Discord:
         <ul>
           <li>sibelius' mentorship</li>
@@ -60,8 +59,11 @@ const { lastCommit } = Astro.props;
           <li>Maintaining this blog and creating a writing habit</li>
           <li>
             Building a
-            <Link href={linkToMyRepo('bunchat')}> chat application </Link> 4 fun
-            with Bun
+            <Link href={linkToMyRepo('bunchat')} isExternal>
+              {' '}
+              chat application{' '}
+            </Link>
+            4 fun with Bun
           </li>
         </ul>
       </p>
@@ -103,24 +105,13 @@ const { lastCommit } = Astro.props;
         </ul>
       </p>
     </section>
-
-    <style>
-      article {
-        display: flex;
-        flex-direction: column;
-        gap: var(--spacing-2x);
-      }
-
-      article section {
-        display: flex;
-        flex-direction: column;
-        gap: var(--spacing);
-      }
-
-      li {
-        list-style-type: disc;
-        margin-left: var(--spacing-2x);
-      }
-    </style>
   </article>
 </Layout>
+
+<style>
+  article section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-2);
+  }
+</style>

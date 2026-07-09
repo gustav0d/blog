@@ -1,0 +1,301 @@
+:root {
+  --paper: #f9f9f8;
+
+  --ink-900: #0e0d0c;
+  --ink-700: #3a3836;
+  --ink-500: #7a7872;
+  --ink-300: #c0beba;
+
+  --border: rgba(14, 13, 12, 0.1);
+  --tag-bg: rgba(14, 13, 12, 0.07);
+  --code-bg: rgba(14, 13, 12, 0.06);
+  --codeblock-bg: #eeecea;
+
+  /* Fonts */
+  --font-serif: 'Cormorant', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Instrument Sans', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  /* Spacing */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 20px;
+  --sp-6: 24px;
+  --sp-8: 32px;
+}
+
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+html {
+  scrollbar-gutter: stable;
+}
+
+body {
+  background: var(--paper);
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--ink-700);
+}
+
+.wrap {
+  max-width: 44rem;
+  margin: 0 auto;
+  padding: 0 var(--sp-6);
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-8);
+  padding: 40px 0;
+  position: relative;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-serif);
+  line-height: 1.2;
+  color: var(--ink-900);
+}
+
+h1 {
+  font-size: 36px;
+  font-weight: 400;
+}
+
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 600;
+}
+
+h2 {
+  font-size: 22px;
+}
+
+li {
+  list-style-type: none;
+}
+
+strong {
+  font-weight: 500;
+}
+
+code {
+  font-family: var(--font-mono);
+}
+
+a {
+  color: var(--ink-700);
+  text-decoration: none;
+  transition:
+    color 0.2s ease,
+    text-decoration-color 0.2s ease;
+}
+
+a:hover {
+  color: var(--ink-900);
+}
+
+p a,
+li a,
+blockquote a {
+  text-decoration: underline;
+  text-decoration-color: var(--ink-300);
+  text-underline-offset: 2px;
+  text-decoration-thickness: 0.5px;
+}
+
+p a:hover,
+li a:hover,
+blockquote a:hover {
+  text-decoration-color: var(--ink-700);
+}
+
+.heading-link {
+  text-decoration: none;
+  color: var(--ink-900);
+}
+
+.heading-link:hover {
+  opacity: 0.65;
+}
+
+.heading-link::after {
+  content: '\00B6';
+  margin-left: 0.5rem;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.heading-link:hover::after {
+  opacity: 1;
+}
+
+/* ---- Prose: rendered markdown (blog posts, lists, TIL) ---- */
+
+.prose {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  max-width: 34rem;
+  line-height: 1.8;
+}
+
+.prose
+  a[href^='http']:not([href^='https://notes.gusdantas.dev']):not(
+    [href^='http://notes.gusdantas.dev']
+  )::after {
+  content: '↗';
+  display: inline-block;
+  margin-left: 0.2em;
+  font-family: var(--font-sans);
+  font-size: 0.75em;
+  transform: translateY(-0.05em);
+}
+
+.prose ul,
+.prose ol {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.prose ul li,
+.prose ol li {
+  margin-left: var(--sp-8);
+}
+
+.prose ul li {
+  list-style-type: disc;
+}
+
+.prose ol li {
+  list-style-type: decimal;
+}
+
+.prose img {
+  width: 100%;
+}
+
+.prose blockquote {
+  border-left: 1.5px solid var(--ink-700);
+  padding-left: var(--sp-4);
+  margin: var(--sp-2) 0;
+  font-style: italic;
+  color: var(--ink-500);
+}
+
+.prose code {
+  background: var(--code-bg);
+  border-radius: 3px;
+  padding: 1px 5px;
+  color: var(--ink-900);
+}
+
+.prose .astro-code,
+.prose [data-rehype-pretty-code-figure] code {
+  display: block;
+  padding: var(--sp-3) var(--sp-4);
+  font-size: 13px;
+  overflow-x: auto;
+  background-color: var(--codeblock-bg);
+  border: 0.5px solid var(--border);
+  border-radius: 3px;
+  margin: var(--sp-2) 0;
+  white-space: pre-wrap;
+  text-wrap: nowrap;
+}
+
+.prose [data-rehype-pretty-code-title] {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+  padding: var(--sp-2);
+}
+
+.prose code {
+  counter-reset: line;
+}
+
+.prose code > [data-line]::before {
+  counter-increment: line;
+  content: counter(line);
+  display: inline-block;
+  width: 1rem;
+  margin-right: 2rem;
+  text-align: right;
+  color: var(--ink-300);
+}
+
+.prose code[data-line-numbers-max-digits='2'] > [data-line]::before {
+  width: 2rem;
+}
+
+.prose code[data-line-numbers-max-digits='3'] > [data-line]::before {
+  width: 3rem;
+}
+
+.prose .table-wrapper {
+  overflow-x: auto;
+}
+
+.prose table {
+  border: 0.5px solid var(--border);
+  border-collapse: collapse;
+}
+
+.prose table tr {
+  border: 0.5px solid var(--border);
+}
+
+.prose table tr:last-child {
+  border-bottom: none;
+}
+
+.prose table tr:nth-child(2n) {
+  background-color: var(--code-bg);
+}
+
+.prose table th {
+  font-weight: 500;
+  background-color: var(--ink-900);
+  color: var(--paper);
+}
+
+.prose table th,
+.prose table td {
+  padding: var(--sp-2) var(--sp-4);
+}
+
+/* TODO: Why is KaTeX duplicating the code */
+.katex-html {
+  display: none;
+}

@@ -27,12 +27,19 @@ export const og = ({ date = true, tags = true, ...props }: Props) => (
         flexDirection: 'column',
         justifyContent: 'space-between',
         width: '100%',
+        fontFamily: 'Instrument Sans',
       }}>
       <div style={{ display: 'flex', flexDirection: 'column' }}>
-        <p style={{ fontSize: '12px', margin: 0, fontWeight: 300 }}>
+        <p style={{ fontSize: '12px', margin: 0, fontWeight: 400 }}>
           {SITE.website}
         </p>
-        <p style={{ fontSize: '72px', fontWeight: 700, margin: 0 }}>
+        <p
+          style={{
+            fontSize: '72px',
+            margin: 0,
+            fontFamily: 'Cormorant',
+            fontWeight: 600,
+          }}>
           {props.data.title}
         </p>
       </div>
@@ -44,7 +51,9 @@ export const og = ({ date = true, tags = true, ...props }: Props) => (
         }}>
         {tags ? (
           <p style={{ display: 'flex', gap: 8 }}>
-            {props.data.tags?.map((tag, i) => <span key={i}>#{tag}</span>)}
+            {props.data.tags?.map((tag, i) => (
+              <span key={i}>#{tag}</span>
+            ))}
           </p>
         ) : null}
         {date ? <p>{dayjs(props.data?.pubDate).format('YYYY-MM-DD')}</p> : null}

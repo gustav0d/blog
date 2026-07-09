@@ -1,49 +1,114 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 
-import Link from './Link.astro';
-
 interface Props {
   posts: CollectionEntry<'blog'>[];
 }
 
 const { posts } = Astro.props;
+
+const sorted = posts.sort(
+  (a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime(),
+);
 ---
 
 <section class='posts'>
   <slot />
-  <ul>
+  <div>
     {
-      posts
-        .sort(
-          (a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime(),
-        )
-        .map((post) => (
-          <li>
-            <p>{post.data.pubDate.toISOString().split('T')[0]}</p>
-            <Link href={`/blog/${post.data.slug}`}>
-              <p class='post-title'>{post.data.title}</p>
-            </Link>
-          </li>
-        ))
+      sorted.map((post) => {
+        const tags = post.data.tags || [];
+        const date = post.data.pubDate.toISOString().split('T')[0];
+
+        return (
+          <a class='row' href={`/blog/${post.data.slug}`}>
+            <p class='title-line'>
+              <span class='title'>{post.data.title}</span>
+              <span class='dot' aria-hidden>
+                ·
+              </span>
+              <span class='date'>{date}</span>
+            </p>
+            {tags.length > 0 && (
+              <p class='tags'>
+                {tags.map((tag, i) => (
+                  <>
+                    {i > 0 && (
+                      <span class='dot' aria-hidden>
+                        ·
+                      </span>
+                    )}
+                    <span class='tag'>#{tag}</span>
+                  </>
+                ))}
+              </p>
+            )}
+          </a>
+        );
+      })
     }
-  </ul>
+  </div>
 </section>
 
 <style>
-  .posts ul {
+  .posts > div {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing);
   }
 
-  .posts ul li {
+  .row {
+    display: block;
+    padding: var(--sp-5) 0;
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .row:last-child {
+    border-bottom: none;
+  }
+
+  .title-line {
     display: flex;
-    justify-content: space-between;
-    column-gap: var(--spacing-8x);
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: var(--sp-2);
+    text-align: left;
   }
 
-  .posts :global(a) {
-    flex: 1;
+  .title {
+    font-family: var(--font-serif);
+    font-size: 22px;
+    line-height: 1.2;
+    color: var(--ink-900);
+  }
+
+  .row:hover .title {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 0.5px;
+  }
+
+  .date {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--ink-500);
+    white-space: nowrap;
+  }
+
+  .tags {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--sp-2);
+    margin-top: var(--sp-2);
+  }
+
+  .tag {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-500);
+  }
+
+  .dot {
+    color: var(--ink-300);
   }
 </style>

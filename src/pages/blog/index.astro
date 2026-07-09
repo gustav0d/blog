@@ -2,42 +2,14 @@
 import { getCollection } from 'astro:content';
 
 import Layout from '../../layout/Layout.astro';
-import Link from '../../components/Link.astro';
 import GoBackButton from '../../components/GoBackButton.astro';
+import Posts from '../../components/Posts.astro';
 
 const posts = await getCollection('blog', ({ data }) => !data.draft);
-const postsSorted = posts.sort(
-  (a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime(),
-);
 ---
 
 <Layout>
-  <GoBackButton />
-  <section class='posts'>
-    <section>
-      <h2>All posts</h2>
-    </section>
-    <ul>
-      {
-        postsSorted.map((post) => (
-          <li>
-            <p>
-              <Link href={`/blog/${post.data.slug}`}>
-                {post.data.pubDate?.toISOString().split('T')[0]}{' '}
-                {post.data.title}
-              </Link>
-            </p>
-          </li>
-        ))
-      }
-    </ul>
-  </section>
+  <Posts posts={posts}>
+    <h1>Posts.</h1>
+  </Posts>
 </Layout>
-
-<style>
-  .posts {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-2x);
-  }
-</style>
