@@ -20,11 +20,13 @@ jobs:
     steps:
       - name: Checkout your repository using git
         uses: actions/checkout@v4
+        with:
+          # Posts render their "modified" date from `git log`, which needs full history
+          fetch-depth: 0
       - name: Install, build, and upload your site
         uses: withastro/action@v3
         with:
-          node-version: 22
-          package-manager: pnpm@latest
+          node-version: 24
         # path: . # The root location of your Astro project inside the repository. (optional)
 
   deploy:
