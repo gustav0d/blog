@@ -9,14 +9,7 @@ const posts = await getCollection('blog', ({ data }) => !data.draft);
 ---
 
 <Layout>
-  <GoBackButton />
   <Posts posts={posts}>
-    <h2>all notes</h2>
+    <h1>Posts.</h1>
   </Posts>
 </Layout>
-
-<style>
-  h2 {
-    margin-bottom: var(--sp-4);
-  }
-</style>

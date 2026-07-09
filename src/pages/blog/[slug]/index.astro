@@ -8,7 +8,6 @@ import path from 'path';
 import Link from '../../../components/Link.astro';
 import Layout from '../../../layout/Layout.astro';
 import GoBackButton from '../../../components/GoBackButton.astro';
-import Tag from '../../../components/Tag.astro';
 import { GITHUB_REPO_URL, SITE } from '../../../config';
 
 type GitLogCommit = DefaultLogFields & ListLogLine;
@@ -57,7 +56,14 @@ export async function getStaticPaths() {
 const { post, lastCommit } = Astro.props;
 const { Content, headings, remarkPluginFrontmatter } = await render(post);
 
-const date = dayjs(post.data.pubDate).format('YYYY-MM-DD HH:mm');
+const date = dayjs(post.data.pubDate).format('YYYY-MM-DD');
+const modifiedDate = lastCommit
+  ? dayjs(lastCommit.date).format('YYYY-MM-DD')
+  : null;
+const commitShortHash = lastCommit ? lastCommit.hash.slice(0, 7) : null;
+const commitUrl = lastCommit
+  ? `${GITHUB_REPO_URL}/commit/${lastCommit.hash.slice(0, 7)}`
+  : null;
 
 const tableOfContents = headings
   .filter((heading) => heading.depth === 2 || heading.depth === 3)
@@ -67,7 +73,50 @@ const tableOfContents = headings
     depth: headings.depth === 2 ? 1 : 2,
   }));
 
-const readingTime = remarkPluginFrontmatter.readingTime;
+const readingTime =
+  remarkPluginFrontmatter.readingTime ??
+  (() => {
+    const words = post.body?.trim().split(/\s+/).filter(Boolean).length ?? 0;
+    const minutes = Math.max(1, Math.round(words / 200));
+    return { text: `${minutes} min read` };
+  })();
+
+const tags = post.data.tags || [];
+
+// "Linked notes": posts actually connected via markdown links in the body
+// (either this post links to them, or they link back to this post).
+const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+
+// ](<any non white-space>)
+const MARKDOWN_LINK_RE = /\]\(([^)\s]+)\)/g;
+
+const slugFromLink = (href: string) => {
+  const path = href.startsWith(SITE.website)
+    ? href.slice(SITE.website.length)
+    : href;
+  const match = path.match(/^\/blog\/([a-zA-Z0-9-]+)$/);
+  return match?.[1] ?? null;
+};
+
+const extractLinkedSlugs = (body: string | undefined) => {
+  const slugs = new Set<string>();
+  for (const [, href] of body?.matchAll(MARKDOWN_LINK_RE) ?? []) {
+    const slug = slugFromLink(href);
+    if (slug) slugs.add(slug);
+  }
+  return slugs;
+};
+
+const outboundSlugs = extractLinkedSlugs(post.body);
+
+const linkedNotes = allPosts
+  .filter((other) => other.data.slug !== post.data.slug)
+  .filter((other) => {
+    const isOutbound = outboundSlugs.has(other.data.slug);
+    const isBacklink = extractLinkedSlugs(other.body).has(post.data.slug);
+    return isOutbound || isBacklink;
+  })
+  .sort((a, b) => (dayjs(b.data.pubDate).isAfter(a.data.pubDate) ? 1 : -1));
 ---
 
 <Layout
@@ -77,134 +126,116 @@ const readingTime = remarkPluginFrontmatter.readingTime;
   showNavbar={false}>
   <GoBackButton />
 
-  <section class='content'>
-    <section class='header'>
-      <section>
-        <div class='meta'>
-          {
-            (post.data.tags || []).map((tag) => (
-              <Link href={`/tag/${tag}`}>
-                <Tag uppercase>{tag}</Tag>
-              </Link>
-            ))
-          }
-          <span class='meta-line'>
-            <span>{date}</span>
-            {
-              readingTime && (
-                <>
-                  <span class='dot' aria-hidden>
-                    ·
-                  </span>
-                  <span>{readingTime.text}</span>
-                </>
-              )
-            }
-            {
-              lastCommit && (
-                <>
-                  <span class='dot' aria-hidden>
-                    ·
-                  </span>
-                  <span>
-                    <Link
-                      href={`${GITHUB_REPO_URL}/commit/${lastCommit.hash.slice(0, 7)}`}
-                      isExternal>
-                      {lastCommit.hash.slice(0, 7)}
-                    </Link>
-                  </span>
-                </>
-              )
-            }
-          </span>
-        </div>
-        <h1>{post.data.title}</h1>
-      </section>
+  <article class='note'>
+    <h1 class='title'>{post.data.title}</h1>
 
-      <article class='prose'>
-        {
-          tableOfContents.length > 0 ? (
-            <details class='toc--wrapper' open>
-              <summary>Table of Contents</summary>
-              <section class='toc'>
-                <ul>
-                  {tableOfContents.map(({ text, url, depth }) => (
-                    <li style={{ marginLeft: `${depth * 16}px` }}>
-                      <div>
-                        <Link href={url}>
-                          <p>{text}</p>
-                        </Link>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              </section>
-            </details>
-          ) : null
-        }
-        <Content />
-      </article>
-    </section>
-  </section>
+    <div class='path'>~/blog/{post.data.slug}</div>
+
+    <div class='meta-line'>
+      <span>created {date}</span>
+      {
+        modifiedDate && (
+          <span class='dot' aria-hidden>
+            ·
+          </span>
+        )
+      }
+      {
+        modifiedDate && (
+          <span>
+            modified {modifiedDate}
+            {commitUrl && commitShortHash && (
+              <>
+                {' '}
+                (
+                <Link href={commitUrl} isExternal>
+                  {commitShortHash}
+                </Link>
+                )
+              </>
+            )}
+          </span>
+        )
+      }
+      <span class='dot' aria-hidden>·</span>
+      <span>{readingTime.text}</span>
+    </div>
+
+    {
+      tags.length > 0 && (
+        <div class='tags'>
+          {tags.map((tag) => (
+            <Link href={`/tag/${tag}`}>
+              <span class='tag'>#{tag}</span>
+            </Link>
+          ))}
+        </div>
+      )
+    }
+
+    <div class='rule'></div>
+
+    {
+      tableOfContents.length > 0 && (
+        <details class='toc-wrapper'>
+          <summary>Table of Contents</summary>
+          <section class='toc'>
+            <ul>
+              {tableOfContents.map(({ text, url, depth }) => (
+                <li style={{ marginLeft: `${depth * 16}px` }}>
+                  <Link href={url}>
+                    <p>{text}</p>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+        </details>
+      )
+    }
+
+    <article class='prose'>
+      <Content />
+    </article>
+
+    <div class='footer'>
+      {
+        linkedNotes.length > 0 && (
+          <section class='linked'>
+            <h2 class='section-title'>Linked notes</h2>
+            <ul class='linked-list'>
+              {linkedNotes.map((note) => (
+                <li class='linked-item'>
+                  <Link href={`/blog/${note.data.slug}`}>
+                    #{note.data.slug}
+                  </Link>
+                  <span class='linked-date'>
+                    {dayjs(note.data.pubDate).format('YYYY-MM-DD')}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )
+      }
+    </div>
+  </article>
 
   <style>
-    .content {
-      position: relative;
-      display: flex;
-      gap: var(--sp-8);
-      flex-direction: column;
-    }
-
-    .header {
-      display: flex;
-      flex-direction: column;
-      gap: var(--sp-3);
-      max-width: 34rem;
-      padding-bottom: var(--sp-6);
-      border-bottom: 0.5px solid var(--border);
-    }
-
-    .meta {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: var(--sp-2);
-    }
-
-    .meta-line {
-      display: flex;
-      align-items: center;
-      gap: var(--sp-2);
-      font-size: 11px;
-      color: var(--ink-500);
-    }
-
-    .meta .dot {
-      color: var(--ink-300);
-    }
-
-    .toc--wrapper {
+    .toc-wrapper {
       background: var(--codeblock-bg);
       width: 100%;
-      position: relative;
+      max-width: 34rem;
       padding: var(--sp-2);
       font-size: 13px;
-    }
-
-    @media screen and (min-width: 1024px) {
-      .toc--wrapper {
-        position: absolute;
-        top: 5px;
-        left: -300px;
-        width: 270px;
-      }
+      font-family: var(--font-mono);
     }
 
     .toc {
       padding: var(--sp-4);
     }
 
-    .toc--wrapper summary {
+    .toc-wrapper summary {
       cursor: pointer;
       color: var(--ink-700);
     }
@@ -216,5 +247,100 @@ const readingTime = remarkPluginFrontmatter.readingTime;
     .toc ul li p {
       text-align: left;
     }
-  </style></Layout
->
+
+    .note {
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-3);
+      max-width: 34rem;
+    }
+
+    .title {
+      font-family: var(--font-serif);
+      font-size: clamp(28px, 5vw, 40px);
+      font-weight: 400;
+      color: var(--ink-900);
+    }
+
+    .path {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--ink-300);
+    }
+
+    .meta-line {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: var(--sp-2);
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--ink-500);
+    }
+
+    .dot {
+      color: var(--ink-300);
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--sp-3);
+    }
+
+    .tag {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--ink-500);
+    }
+
+    .tag:hover {
+      color: var(--ink-900);
+    }
+
+    .rule {
+      border-top: 0.5px solid var(--border);
+      margin: var(--sp-2) 0;
+    }
+
+    .footer {
+      margin-top: var(--sp-6);
+      padding-top: var(--sp-4);
+      border-top: 0.5px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-6);
+    }
+
+    .section-title {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-500);
+      font-weight: 400;
+      margin-bottom: var(--sp-3);
+    }
+
+    .linked-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-2);
+    }
+
+    .linked-item {
+      display: flex;
+      justify-content: space-between;
+      gap: var(--sp-3);
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--ink-700);
+    }
+
+    .linked-date {
+      font-size: 11px;
+      color: var(--ink-500);
+      white-space: nowrap;
+    }
+  </style>
+</Layout>
