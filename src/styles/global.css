@@ -24,6 +24,17 @@
   --sp-5: 20px;
   --sp-6: 24px;
   --sp-8: 32px;
+
+  /* Widths */
+  --measure: 34rem;
+  --shell: 44rem;
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --measure: 38rem;
+    --shell: 48rem;
+  }
 }
 
 *,
@@ -53,7 +64,7 @@ body {
 }
 
 .wrap {
-  max-width: 44rem;
+  max-width: var(--shell);
   margin: 0 auto;
   padding: 0 var(--sp-6);
   min-height: 100%;
@@ -163,13 +174,13 @@ blockquote a:hover {
   display: flex;
   flex-direction: column;
   gap: var(--sp-3);
-  max-width: 34rem;
+  max-width: var(--measure);
   line-height: 1.8;
 }
 
 .prose
-  a[href^='http']:not([href^='https://notes.gusdantas.dev']):not(
-    [href^='http://notes.gusdantas.dev']
+  a[href^='http']:not([href^='https://gusdantas.dev']):not(
+    [href^='http://gusdantas.dev']
   )::after {
   content: '↗';
   display: inline-block;
