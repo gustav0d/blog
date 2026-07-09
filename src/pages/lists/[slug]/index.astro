@@ -34,9 +34,15 @@ const { Content } = await render(post);
   head={{ title: `${post.data.title} | ${SITE.title}` }}>
   <GoBackButton />
   <section>
-    <h1>{post.data.title}</h1>
+    <h1 class='title'>{post.data.title}</h1>
     <article class='prose'>
       <Content />
     </article>
   </section>
 </Layout>
+
+<style>
+  .title {
+    margin-bottom: var(--sp-4);
+  }
+</style>
