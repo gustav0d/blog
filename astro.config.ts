@@ -11,6 +11,7 @@ import path from 'path';
 import { rehypePluginLinkHeading } from './plugins/rehypePluginLinkHeading';
 import { rehypePluginTableWrapper } from './plugins/rehypePluginTableWrapper';
 import { remarkPluginReadingTime } from './plugins/remarkPluginReadingTime';
+import { SITE } from './src/config';
 
 const BLOG_DIR = './src/content/blog';
 
@@ -33,7 +34,7 @@ const disableSitemap = ['/blog/drafts'];
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://gusdantas.dev',
+  site: SITE.website,
   integrations: [
     sitemap({
       filter: (page) => {
