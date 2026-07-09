@@ -177,8 +177,9 @@ const linkedNotes = allPosts
 
     {
       tableOfContents.length > 0 && (
-        <details class='toc-wrapper'>
+        <details class='toc-wrapper' open>
           <summary>Table of Contents</summary>
+          <p class='toc-label'>On this page</p>
           <section class='toc'>
             <ul>
               {tableOfContents.map(({ text, url, depth }) => (
@@ -225,7 +226,7 @@ const linkedNotes = allPosts
     .toc-wrapper {
       background: var(--codeblock-bg);
       width: 100%;
-      max-width: 34rem;
+      max-width: var(--measure);
       padding: var(--sp-2);
       font-size: 13px;
       font-family: var(--font-mono);
@@ -240,19 +241,25 @@ const linkedNotes = allPosts
       color: var(--ink-700);
     }
 
+    .toc-label {
+      display: none;
+    }
+
     .toc ul {
       margin-left: 0;
     }
 
     .toc ul li p {
       text-align: left;
+      white-space: normal;
+      overflow-wrap: break-word;
     }
 
     .note {
       display: flex;
       flex-direction: column;
       gap: var(--sp-3);
-      max-width: 34rem;
+      max-width: var(--measure);
     }
 
     .title {
@@ -341,6 +348,72 @@ const linkedNotes = allPosts
       font-size: 11px;
       color: var(--ink-500);
       white-space: nowrap;
+    }
+
+    @media (min-width: 1180px) {
+      /*
+        Shell escape: .wrap caps out at var(--shell) (48rem), which is
+        narrower than the 13rem + var(--measure) + 13rem sidebar grid below.
+        Widen it for this page only via a scoped :global() override.
+      */
+      :global(.wrap) {
+        max-width: 68rem;
+      }
+
+      .note {
+        display: grid;
+        grid-template-columns: 13rem minmax(0, var(--measure)) 13rem;
+        column-gap: var(--sp-8);
+        row-gap: var(--sp-3);
+        max-width: none;
+        margin: 0 auto;
+      }
+
+      .note > :not(.toc-wrapper) {
+        grid-column: 2;
+      }
+
+      .toc-wrapper {
+        grid-column: 1;
+        grid-row: 1 / -1;
+        align-self: start;
+        position: sticky;
+        top: var(--sp-6);
+        max-height: calc(100vh - 4rem);
+        overflow-y: auto;
+        overflow-wrap: break-word;
+        white-space: normal;
+        width: 13rem;
+        max-width: none;
+        background: none;
+        padding: 0;
+        font-family: var(--font-mono);
+        font-size: 11px;
+        color: var(--ink-500);
+      }
+
+      .toc-wrapper summary {
+        display: none;
+      }
+
+      .toc-label {
+        display: block;
+        font-family: var(--font-mono);
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--ink-500);
+        font-weight: 400;
+        margin-bottom: var(--sp-3);
+      }
+
+      .toc {
+        padding: 0;
+      }
+
+      .toc a:hover {
+        color: var(--ink-900);
+      }
     }
   </style>
 </Layout>
