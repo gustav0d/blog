@@ -19,12 +19,19 @@ export const post = (props: CollectionEntry<'blog'>) => {
           flexDirection: 'column',
           justifyContent: 'space-between',
           width: '100%',
+          fontFamily: 'Instrument Sans',
         }}>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <p style={{ fontSize: '12px', margin: 0, fontWeight: 300 }}>
+          <p style={{ fontSize: '12px', margin: 0, fontWeight: 400 }}>
             {SITE.website}
           </p>
-          <p style={{ fontSize: '72px', fontWeight: 700, margin: 0 }}>
+          <p
+            style={{
+              fontSize: '72px',
+              margin: 0,
+              fontFamily: 'Cormorant',
+              fontWeight: 600,
+            }}>
             {props.data.title}
           </p>
         </div>

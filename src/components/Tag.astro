@@ -1,0 +1,31 @@
+---
+interface Props {
+  uppercase?: boolean;
+}
+
+const { uppercase = false } = Astro.props;
+---
+
+<span class='tag' class:list={{ uppercase }}>
+  <slot />
+</span>
+
+<style>
+  .tag {
+    display: inline-block;
+    font-size: 9px;
+    font-weight: 500;
+    line-height: 1.5;
+    letter-spacing: 0.06em;
+    padding: 1px 6px;
+    border-radius: 2px;
+    white-space: nowrap;
+    background: var(--tag-bg);
+    color: var(--ink-700);
+  }
+
+  .tag.uppercase {
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+</style>

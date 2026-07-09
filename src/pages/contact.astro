@@ -13,7 +13,9 @@ import Link from '../components/Link.astro';
       {
         links.map((link) => (
           <li>
-            <Link href={link.href}>{link.name}</Link>
+            <Link href={link.href} isExternal>
+              {link.name}
+            </Link>
           </li>
         ))
       }

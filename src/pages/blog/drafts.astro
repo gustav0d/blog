@@ -12,8 +12,7 @@ const draftPosts = await getCollection('blog', ({ data }) => data.draft);
   <GoBackButton />
   <section class='posts'>
     <section>
-      <h2>Posts.</h2>
-      <p>This is the list of draft posts.</p>
+      <h2>Draft posts.</h2>
     </section>
     <ul>
       {
@@ -33,6 +32,6 @@ const draftPosts = await getCollection('blog', ({ data }) => data.draft);
   .posts {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-2x);
+    gap: var(--sp-4);
   }
 </style>
