@@ -2,20 +2,18 @@
 import '@fontsource/instrument-sans/400.css';
 import '@fontsource/instrument-sans/400-italic.css';
 import '@fontsource/instrument-sans/500.css';
-import '@fontsource/cormorant/400.css';
-import '@fontsource/cormorant/600.css';
+import '@fontsource/spectral/400.css';
+import '@fontsource/spectral/600.css';
 import '@fontsource/jetbrains-mono/400.css';
 import '../styles/global.css';
 import { ClientRouter } from 'astro:transitions';
 
 import Footer from '../components/Footer.astro';
-import Navbar from '../components/Navbar.astro';
 import { SITE } from '../config';
 
 export interface Props {
   ogImage?: string;
   customLang?: string;
-  showNavbar?: boolean;
   head?: {
     title?: string;
     description?: string;
@@ -29,7 +27,6 @@ const {
     description: SITE.description,
   },
   customLang = 'en',
-  showNavbar = true,
 } = Astro.props;
 
 const ogURL = new URL(ogImage, Astro.url.origin).href;
@@ -80,7 +77,6 @@ const rssFeedURL = new URL('rss.xml', Astro.site).href;
   </head>
   <body>
     <div class='wrap'>
-      {showNavbar && <Navbar />}
       <main>
         <slot />
       </main>
