@@ -34,6 +34,7 @@ const { lastCommit } = Astro.props;
 ---
 
 <Layout>
+  <GoBackButton />
   <section>
     <h1>Now</h1>
     <p>Last update: {dayjs(lastCommit?.date).format('YYYY-MM-DD HH:mm')}</p>
