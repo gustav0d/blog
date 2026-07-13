@@ -37,7 +37,7 @@ export const og = ({ date = true, tags = true, ...props }: Props) => (
           style={{
             fontSize: '72px',
             margin: 0,
-            fontFamily: 'Cormorant',
+            fontFamily: 'Spectral',
             fontWeight: 600,
           }}>
           {props.data.title}
