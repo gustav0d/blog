@@ -9,12 +9,12 @@ import { TWITTER_URL } from '../config';
 const HOME_POSTS_LIMIT = 5;
 
 const posts = await getCollection('blog', ({ data }) => !data.draft);
-const postsSorted = posts
-  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())
-  .slice(0, HOME_POSTS_LIMIT);
+const postsSorted = posts.sort(
+  (a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime(),
+);
+const latestPosts = postsSorted.slice(0, HOME_POSTS_LIMIT);
+const featuredPosts = postsSorted.filter((post) => post.data.isFeatured);
 const hasMorePosts = posts.length > HOME_POSTS_LIMIT;
-
-const lists = await getCollection('lists');
 
 const year = new Date().getFullYear() - 2004;
 
@@ -54,10 +54,10 @@ const links = [
 
   <section class='columns'>
     <div class='column'>
-      <h2 class='column-heading'>Posts</h2>
+      <h2 class='column-heading'>Latest posts</h2>
       <div class='feed-list'>
         {
-          postsSorted.map((post) => (
+          latestPosts.map((post) => (
             <a class='feed-row' href={`/blog/${post.data.slug}`}>
               <span class='feed-date'>
                 {post.data.pubDate.toISOString().split('T')[0]}
@@ -77,12 +77,15 @@ const links = [
     </div>
 
     <div class='column'>
-      <h2 class='column-heading'>Lists</h2>
+      <h2 class='column-heading'>Featured posts</h2>
       <div class='feed-list'>
         {
-          lists.map((list) => (
-            <a class='feed-row feed-row--simple' href={`/lists/${list.id}`}>
-              <span class='feed-title'>{list.data.title}</span>
+          featuredPosts.map((post) => (
+            <a class='feed-row' href={`/blog/${post.data.slug}`}>
+              <span class='feed-date'>
+                {post.data.pubDate.toISOString().split('T')[0]}
+              </span>
+              <span class='feed-title'>{post.data.title}</span>
             </a>
           ))
         }
@@ -134,10 +137,6 @@ const links = [
     gap: var(--sp-3);
     padding: var(--sp-2) 0;
     border-bottom: 0.5px solid var(--border);
-  }
-
-  .feed-row--simple {
-    grid-template-columns: 1fr;
   }
 
   .feed-date {
