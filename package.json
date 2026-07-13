@@ -22,9 +22,10 @@
   "dependencies": {
     "@astrojs/check": "^0.9.9",
     "@astrojs/markdown-remark": "^7.2.1",
-    "@fontsource/cormorant": "^5.2.8",
     "@fontsource/instrument-sans": "^5.2.8",
     "@fontsource/jetbrains-mono": "^5.2.8",
+    "@fontsource/spectral": "^5.2.8",
+    "@react-pdf/renderer": "^4.5.1",
     "@resvg/resvg-js": "^2.6.2",
     "astro": "^7.0.6",
     "dayjs": "^1.11.21",
