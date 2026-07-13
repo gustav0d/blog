@@ -9,6 +9,7 @@ const posts = await getCollection('blog', ({ data }) => !data.draft);
 ---
 
 <Layout>
+  <GoBackButton />
   <Posts posts={posts}>
     <h1>Posts.</h1>
   </Posts>
