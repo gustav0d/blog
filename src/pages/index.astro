@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 
 import Layout from '../layout/Layout.astro';
+import CvDownload from '../components/CvDownload.astro';
 import Link from '../components/Link.astro';
 import { TWITTER_URL } from '../config';
 
@@ -27,6 +28,7 @@ const links = [
 ---
 
 <Layout>
+  <h1>Dantas' blog</h1>
   <section class='intro'>
     <p>
       I'm a {year} year old software engineer from Brazil, with interests in software
@@ -35,6 +37,7 @@ const links = [
       <Link href={TWITTER_URL} isExternal>X/Twitter</Link> or via {' '}
       <Link href='mailto:gusdantas15@gmail.com'>email</Link>.
     </p>
+    <CvDownload />
   </section>
 
   <section class='quick-links'>

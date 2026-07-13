@@ -1,0 +1,138 @@
+{
+  "person": {
+    "name": "Gustavo Dantas",
+    "headline": "Engenheiro de software",
+    "location": "Brasil",
+    "email": "oi@gusdantas.dev",
+    "linkedin": "linkedin.com/in/gustavo-dantas-galote",
+    "github": "github.com/gustav0d"
+  },
+  "available": true,
+  "experience": [
+    {
+      "company": "Beyond Co.",
+      "location": "Recife, PE - Brasil",
+      "title": "Desenvolvedor de software",
+      "dates": "agosto de 2025 - junho de 2026",
+      "bullets": [
+        "Construí o primeiro app mobile nativo do time, do zero até um build de produção para a demo de um cliente em ~1 mês, usando React Native e Expo.",
+        "Depurei e corrigi workflows de automação n8n quebrados em produção, rastreando falhas ao longo dos pipelines. Corrigi bugs de integridade de dados e de estado em uma base de código Vue.",
+        "Compartilhei conhecimento: uma palestra sobre engenharia de contexto e desenvolvimento assistido por IA, além de playbooks e agent skills (AGENTS.md, guidelines por área) para acelerar novos product builders."
+      ]
+    },
+    {
+      "company": "Líbertas Group",
+      "location": "Barueri, SP - Brasil",
+      "title": "Desenvolvedor de software",
+      "dates": "agosto de 2025 - fevereiro de 2026",
+      "bullets": [
+        "Construí a FazedorIA — um produto de chat com IA que atende ~5.000 usuários — cuidando de toda a stack de ponta a ponta: backend em TypeScript/Fastify/PostgreSQL, frontend em React, workers em segundo plano (BullMQ), CI/CD e serviços em Docker. Integrei a Hubla para cobrança",
+        "Projetei a engine de chat com IA sobre LangChain com múltiplos provedores de modelo (Gemini, OpenAI, Groq) — com guardrails e tracing e avaliação de LLM de ponta a ponta com Opik, mantendo as gerações observáveis e seguras."
+      ]
+    },
+    {
+      "company": "Entria",
+      "location": "São Paulo, SP - Brasil",
+      "title": "Engenheiro de software",
+      "dates": "junho de 2025 - agosto de 2025",
+      "bullets": [
+        {
+          "text": "Corrigi um crash recorrente que bloqueava a geração de relatórios em produção havia meses, reescrevendo o pipeline de processamento com Node.js Streams.",
+          "links": [
+            {
+              "label": "Using Node.js Streams to Optimize Processes",
+              "href": "https://gusdantas.dev/blog/using-nodejs-streams-to-optimize-processes"
+            }
+          ]
+        },
+        {
+          "text": "Resolvi bugs nos pipelines de geração de avaliações de desempenho, rastreando a causa raiz até várias queries de agregação do MongoDB.",
+          "links": [
+            {
+              "label": "About MongoDB Aggregations",
+              "href": "https://gusdantas.dev/blog/about-mongodb-aggregations"
+            }
+          ]
+        },
+        "Ajudei a integrar um novo desenvolvedor à base de código, explicando as tecnologias e conceitos em uso — MongoDB, GraphQL, Relay, BullMQ —, as regras de negócio e como funcionava o deploy da aplicação full-stack."
+      ]
+    },
+    {
+      "company": "Comp Júnior",
+      "location": "Lavras, MG - Brasil",
+      "title": "Tech lead (Empresa Júnior)",
+      "dates": "abril de 2023 - junho de 2024",
+      "bullets": [
+        {
+          "text": "Escrevi uma série de posts no dev.to que somam +300 reações:",
+          "links": [
+            {
+              "label": "O que é uma Empresa Júnior?",
+              "href": "https://dev.to/compjunior/o-que-e-uma-empresa-junior-jdi"
+            },
+            {
+              "label": "Documentando o desenvolvimento com issues",
+              "href": "https://dev.to/compjunior/documentando-o-desenvolvimento-com-issues-32ki"
+            },
+            {
+              "label": "Descrevendo e criando issues como um profissional",
+              "href": "https://dev.to/compjunior/descrevendo-e-criando-issues-como-um-profissional-1a28"
+            }
+          ]
+        },
+        {
+          "text": "Implementei pipelines de CI/CD com GitHub Actions e Docker. Liderei a cultura de code review e de documentação. Criei uma plataforma de documentação técnica para padronização de projetos e conteúdo técnico para a biblioteca digital da empresa.",
+          "links": [
+            {
+              "label": "Athena",
+              "href": "https://athena.compjunior.com.br"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "company": "Infoluck",
+      "location": "Amparo, SP - Brasil",
+      "title": "Técnico de TI",
+      "dates": "janeiro de 2022 - dezembro de 2022",
+      "bullets": [
+        "Migrei uma aplicação desktop legada em Delphi para uma arquitetura web moderna, ao lado de um time de duas pessoas.",
+        "Projetei a nova arquitetura SPA e liderei a adoção da stack principal do projeto — TypeScript, React, Redux para gerenciamento de estado, TanStack Query, Zod, e estruturei o design system com Mantine UI."
+      ]
+    }
+  ],
+  "skills": [
+    "Node.js",
+    "Bun",
+    "React.js",
+    "React Native",
+    "Docker",
+    "PostgreSQL",
+    "MongoDB",
+    "Redis",
+    "BullMQ",
+    "GitHub Actions",
+    "CI/CD",
+    "Observabilidade"
+  ],
+  "languages": [
+    { "name": "Português", "level": "nativo" },
+    { "name": "Inglês", "level": "avançado" }
+  ],
+  "certifications": [],
+  "education": [
+    {
+      "institution": "Universidade Federal de Lavras",
+      "degree": "Bacharelado",
+      "field": "Ciência da Computação",
+      "dates": "outubro de 2022"
+    },
+    {
+      "institution": "ETEC - Escola Técnica Estadual de São Paulo",
+      "degree": "Curso Técnico Integrado ao Ensino Médio",
+      "field": "Desenvolvimento de Sistemas",
+      "dates": "2019 - 2021"
+    }
+  ]
+}

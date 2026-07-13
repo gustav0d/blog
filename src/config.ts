@@ -1,13 +1,12 @@
 export const SITE = {
-  title: "gusdantas' notes",
-  website: 'https://notes.gusdantas.dev',
+  title: "gusdantas' place",
+  website: 'https://www.gusdantas.dev',
   description: 'The place where I share some of my ideas and thoughts',
   author: 'Gustavo Dantas <gusdantas15@gmail.com>',
 };
 
-export const PORTFOLIO_URL = 'https://gusdantas.dev';
 export const GITHUB_PROFILE_URL = 'https://github.com/gustav0d';
-export const GITHUB_REPO_URL = `${GITHUB_PROFILE_URL}/notes`;
+export const GITHUB_REPO_URL = `${GITHUB_PROFILE_URL}/blog`;
 export const TWITTER_URL = 'https://twitter.com/gusdantas';
 export const LINKEDIN_URL =
   'https://www.linkedin.com/in/gustavo-dantas-galote/';

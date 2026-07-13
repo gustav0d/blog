@@ -13,14 +13,14 @@ export const ogFonts: SatoriOptions['fonts'] = [
     style: 'normal',
   },
   {
-    name: 'Cormorant',
-    data: fontFile('Cormorant', 'Cormorant-Regular.ttf'),
+    name: 'Spectral',
+    data: fontFile('Spectral', 'Spectral-Regular.ttf'),
     weight: 400,
     style: 'normal',
   },
   {
-    name: 'Cormorant',
-    data: fontFile('Cormorant', 'Cormorant-SemiBold.ttf'),
+    name: 'Spectral',
+    data: fontFile('Spectral', 'Spectral-SemiBold.ttf'),
     weight: 600,
     style: 'normal',
   },
