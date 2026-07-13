@@ -29,7 +29,7 @@ export const post = (props: CollectionEntry<'blog'>) => {
             style={{
               fontSize: '72px',
               margin: 0,
-              fontFamily: 'Cormorant',
+              fontFamily: 'Spectral',
               fontWeight: 600,
             }}>
             {props.data.title}
