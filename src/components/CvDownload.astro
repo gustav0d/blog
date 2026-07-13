@@ -1,0 +1,199 @@
+---
+const options = [
+  { lang: 'en', href: '/resume.pdf', label: 'Download my CV in English' },
+  {
+    lang: 'pt-br',
+    href: '/curriculo.pdf',
+    label: 'Download my CV in Portuguese',
+  },
+];
+---
+
+<div class='wrapper'>
+  <div class='cv' data-cv>
+    <button
+      class='trigger'
+      type='button'
+      aria-expanded='false'
+      aria-controls='cv-menu'>
+      Download my CV
+    </button>
+
+    <div class='menu' id='cv-menu'>
+      <ul>
+        {
+          options.map((option) => (
+            <li>
+              <a href={option.href} aria-label={option.label} download>
+                <span class='lang'>{option.lang}</span>
+                <span class='arrow' aria-hidden='true'>
+                  ↓
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</div>
+
+<style>
+  .wrapper {
+    display: flex;
+    width: 100%;
+    flex-direction: row-reverse;
+  }
+
+  .cv {
+    position: relative;
+    margin-top: var(--sp-4);
+  }
+
+  .trigger {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--sp-5);
+    width: 100%;
+    padding: var(--sp-2) var(--sp-3);
+    border: 0.5px solid var(--border);
+    background: none;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--ink-500);
+    transition:
+      color 0.2s ease,
+      border-color 0.2s ease;
+    user-select: none;
+  }
+
+  /* The 0fr → 1fr grid row is what animates: it needs no fixed height, so the
+     menu can grow with its content. */
+  .menu {
+    display: grid;
+    position: absolute;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.25s ease;
+  }
+
+  /* visibility, not opacity alone: it keeps the collapsed links out of the tab
+     order. Delaying it until the collapse ends preserves the fade out. */
+  .menu ul {
+    overflow: hidden;
+    min-height: 0;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity 0.2s ease,
+      visibility 0s linear 0.2s;
+  }
+
+  .cv[data-open] .trigger {
+    color: var(--ink-900);
+    border-color: var(--ink-300);
+  }
+
+  .cv[data-open] .menu {
+    grid-template-rows: 1fr;
+  }
+
+  .cv[data-open] .menu ul {
+    opacity: 1;
+    visibility: visible;
+    transition:
+      opacity 0.2s ease,
+      visibility 0s;
+  }
+
+  .menu li {
+    list-style-type: none;
+  }
+
+  .menu a {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--sp-5);
+    padding: var(--sp-2) var(--sp-3);
+    border: 0.5px solid transparent;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-500);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .menu a:hover,
+  .menu a:focus-visible {
+    color: var(--ink-900);
+  }
+
+  .menu a:hover .lang {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 0.5px;
+  }
+
+  .arrow {
+    color: var(--ink-300);
+    transition: transform 0.2s ease;
+  }
+
+  .menu a:hover .arrow {
+    color: var(--ink-500);
+    transform: translateY(2px);
+  }
+
+  /* Pointer devices also get it on hover. The click toggle still works here,
+     and on touch it is the only way in, since :hover never fires. */
+  @media (hover: hover) and (pointer: fine) {
+    .cv:hover .trigger,
+    .cv:focus-within .trigger {
+      color: var(--ink-900);
+      border-color: var(--ink-300);
+    }
+
+    .cv:hover .menu,
+    .cv:focus-within .menu {
+      grid-template-rows: 1fr;
+    }
+
+    .cv:hover .menu ul,
+    .cv:focus-within .menu ul {
+      opacity: 1;
+      visibility: visible;
+      transition:
+        opacity 0.2s ease,
+        visibility 0s;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .menu,
+    .menu ul,
+    .arrow {
+      transition: none;
+    }
+
+    .menu a:hover .arrow {
+      transform: none;
+    }
+  }
+</style>
+
+<script>
+  function setOpen(cv: HTMLElement, open: boolean) {
+    if (open) cv.setAttribute('data-open', '');
+    else cv.removeAttribute('data-open');
+
+    cv.querySelector('.trigger')?.setAttribute('aria-expanded', String(open));
+  }
+
+  document.addEventListener('click', (event) => {
+    const cv = document.querySelector<HTMLElement>('[data-cv]');
+    if (!cv) return;
+
+    const onTrigger = (event.target as Element).closest('[data-cv] .trigger');
+    setOpen(cv, onTrigger ? !cv.hasAttribute('data-open') : false);
+  });
+</script>

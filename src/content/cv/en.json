@@ -1,0 +1,138 @@
+{
+  "person": {
+    "name": "Gustavo Dantas",
+    "headline": "Software engineer",
+    "location": "Brazil",
+    "email": "oi@gusdantas.dev",
+    "linkedin": "linkedin.com/in/gustavo-dantas-galote",
+    "github": "github.com/gustav0d"
+  },
+  "available": true,
+  "experience": [
+    {
+      "company": "Beyond Co.",
+      "location": "Recife, PE - Brazil",
+      "title": "Software developer",
+      "dates": "August 2025 - June 2026",
+      "bullets": [
+        "Built the team's first native mobile app from zero to a production build for a client demo in ~1 month, using React Native and Expo on top of the existing Supabase backend.",
+        "Debugged and fixed broken n8n automation workflows in production, tracing failures across pipelines. Fixed data-integrity and state bugs across a Vue codebase.",
+        "Drove knowledge sharing — a talk on context engineering and AI-assisted development, plus playbooks and agent skills (AGENTS.md, per-area guidelines) to ramp up new product builders."
+      ]
+    },
+    {
+      "company": "Líbertas Group",
+      "location": "Barueri, SP - Brazil",
+      "title": "Software developer",
+      "dates": "August 2025 - February 2026",
+      "bullets": [
+        "Built and shipped FazedorIA — an AI chat product serving ~5,000 users — owning the full stack end to end: TypeScript/Fastify/PostgreSQL backend, React frontend, background workers (BullMQ), and CI/CD, Dockerized services. Integrated Hubla for billing",
+        "Designed the AI chat engine on LangChain with multiple model providers (Gemini, OpenAI, Groq) — adding guardrails and end-to-end LLM tracing and evaluation with Opik to keep generations observable and safe."
+      ]
+    },
+    {
+      "company": "Entria",
+      "location": "São Paulo, SP - Brazil",
+      "title": "Software engineer",
+      "dates": "June 2025 - August 2025",
+      "bullets": [
+        {
+          "text": "Fixed a recurring crash that had blocked report generation in production for months, rewriting the processing pipeline with Node.js Streams.",
+          "links": [
+            {
+              "label": "Using Node.js Streams to Optimize Processes",
+              "href": "https://gusdantas.dev/blog/using-nodejs-streams-to-optimize-processes"
+            }
+          ]
+        },
+        {
+          "text": "Resolved bugs in performance review generation pipelines, tracing the root cause to several MongoDB aggregation queries — learning aggregations from scratch to diagnose and fix them.",
+          "links": [
+            {
+              "label": "About MongoDB Aggregations",
+              "href": "https://gusdantas.dev/blog/about-mongodb-aggregations"
+            }
+          ]
+        },
+        "Helped onboard a new developer onto the codebase, explaining the technologies and concepts in use — MongoDB, GraphQL, Relay, BullMQ — business rules, and how the full-stack app's deployment worked."
+      ]
+    },
+    {
+      "company": "Comp Júnior",
+      "location": "Lavras, MG - Brazil",
+      "title": "Tech lead (Junior Company)",
+      "dates": "April 2023 - June 2024",
+      "bullets": [
+        {
+          "text": "Wrote a series of blog posts on dev.to that sums +300 likes:",
+          "links": [
+            {
+              "label": "What is a Junior Company?",
+              "href": "https://dev.to/compjunior/o-que-e-uma-empresa-junior-jdi"
+            },
+            {
+              "label": "Documenting the development with issues",
+              "href": "https://dev.to/compjunior/documentando-o-desenvolvimento-com-issues-32ki"
+            },
+            {
+              "label": "Describing and creating issues like a professional",
+              "href": "https://dev.to/compjunior/descrevendo-e-criando-issues-como-um-profissional-1a28"
+            }
+          ]
+        },
+        {
+          "text": "Implemented CI/CD pipelines with GitHub Actions and Docker. Led code review and documentation culture. Created a technical documentation platform for project standardization and technical content for the company's digital library.",
+          "links": [
+            {
+              "label": "Athena",
+              "href": "https://athena.compjunior.com.br"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "company": "Infoluck",
+      "location": "Amparo, SP - Brazil",
+      "title": "IT Technician",
+      "dates": "January 2022 - December 2022",
+      "bullets": [
+        "Migrated a legacy Delphi desktop application to a modern web architecture, alongside a two-person team.",
+        "Designed the new SPA architecture and led adoption of the project's core stack — TypeScript, React, Redux for state management, TanStack Query, Zod, and scaffolding the design system with Mantine UI."
+      ]
+    }
+  ],
+  "skills": [
+    "Node.js",
+    "Bun",
+    "React.js",
+    "React Native",
+    "Docker",
+    "PostgreSQL",
+    "MongoDB",
+    "Redis",
+    "BullMQ",
+    "GitHub Actions",
+    "CI/CD",
+    "Observability"
+  ],
+  "languages": [
+    { "name": "Portuguese", "level": "native" },
+    { "name": "English", "level": "advanced" }
+  ],
+  "certifications": [],
+  "education": [
+    {
+      "institution": "Federal University of Lavras",
+      "degree": "Bachelor's Degree",
+      "field": "Computer Science",
+      "dates": "October 2022"
+    },
+    {
+      "institution": "ETEC - Escola Técnica Estadual de São Paulo",
+      "degree": "Technical Course",
+      "field": "System Development",
+      "dates": "2019 - 2021"
+    }
+  ]
+}
