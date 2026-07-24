@@ -85,7 +85,7 @@ const tags = post.data.tags || [];
 
 // "Linked notes": posts actually connected via markdown links in the body
 // (either this post links to them, or they link back to this post).
-const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+const allPosts = await getCollection('blog', ({ data }) => !data.hidden);
 
 // ](<any non white-space>)
 const MARKDOWN_LINK_RE = /\]\(([^)\s]+)\)/g;
