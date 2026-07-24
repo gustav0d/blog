@@ -30,7 +30,7 @@ const getBlogRoutesRedirect = async () => {
   return Object.fromEntries(blogRoutes);
 };
 
-const disableSitemap = ['/blog/drafts'];
+const disableSitemap = ['/blog/hidden'];
 
 // https://astro.build/config
 export default defineConfig({
