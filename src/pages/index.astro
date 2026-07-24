@@ -4,7 +4,7 @@ import { getCollection } from 'astro:content';
 import Layout from '../layout/Layout.astro';
 import CvDownload from '../components/CvDownload.astro';
 import Link from '../components/Link.astro';
-import { TWITTER_URL } from '../config';
+import { GITHUB_PROFILE_URL, GITHUB_REPO_URL, TWITTER_URL } from '../config';
 
 const HOME_POSTS_LIMIT = 5;
 
@@ -36,6 +36,19 @@ const links = [
       me on {' '}
       <Link href={TWITTER_URL} isExternal>X/Twitter</Link> or via {' '}
       <Link href='mailto:gusdantas15@gmail.com'>email</Link>.
+    </p>
+    <p>
+      If you want to see what I'm doing right now, you can check out my <Link
+        href='/now'>/now</Link
+      > page.{' '}
+      On my <Link href={GITHUB_PROFILE_URL}>GitHub profile</Link> you can find all
+      the repositories that I'm working on, and on my <Link
+        href={GITHUB_REPO_URL}>blog repository</Link
+      > you can find the source code of this blog.
+    </p>
+    <p>
+      You can also see <Link href='/contact'>all my links</Link> or check my resume
+      below
     </p>
     <CvDownload />
   </section>
@@ -96,6 +109,9 @@ const links = [
 
 <style>
   .intro {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-4);
     margin-bottom: var(--sp-4);
   }
 
