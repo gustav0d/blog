@@ -2,6 +2,6 @@
 slug: {{slug}}
 title: {{title}}
 pubDate: {{pubDate}}
-draft: true
+hidden: true
 isFeatured: false
 ---
