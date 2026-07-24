@@ -5,7 +5,7 @@ import Layout from '../../layout/Layout.astro';
 import GoBackButton from '../../components/GoBackButton.astro';
 import Posts from '../../components/Posts.astro';
 
-const posts = await getCollection('blog', ({ data }) => !data.draft);
+const posts = await getCollection('blog', ({ data }) => !data.hidden);
 ---
 
 <Layout>

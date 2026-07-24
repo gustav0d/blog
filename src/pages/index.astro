@@ -8,7 +8,7 @@ import { TWITTER_URL } from '../config';
 
 const HOME_POSTS_LIMIT = 5;
 
-const posts = await getCollection('blog', ({ data }) => !data.draft);
+const posts = await getCollection('blog', ({ data }) => !data.hidden);
 const postsSorted = posts.sort(
   (a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime(),
 );
