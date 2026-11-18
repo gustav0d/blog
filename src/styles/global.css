@@ -243,6 +243,15 @@ blockquote a:hover {
   text-wrap: nowrap;
 }
 
+/* <pre> is the scroll boundary for code blocks. rehype-pretty-code sets
+   `display: grid` on <code>, which sizes it to the longest line; without a
+   clipping ancestor that overflows the whole page (long lines spill out and
+   create horizontal scroll). Letting <pre> clip keeps long lines scrollable
+   inside the block instead. */
+.prose pre {
+  overflow-x: auto;
+}
+
 .prose [data-rehype-pretty-code-title] {
   font-family: var(--font-sans);
   font-size: 11px;
