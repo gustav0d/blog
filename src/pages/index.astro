@@ -2,7 +2,6 @@
 import { getCollection } from 'astro:content';
 
 import Layout from '../layout/Layout.astro';
-import CvDownload from '../components/CvDownload.astro';
 import Link from '../components/Link.astro';
 import { GITHUB_PROFILE_URL, GITHUB_REPO_URL, TWITTER_URL } from '../config';
 
@@ -47,10 +46,8 @@ const links = [
       > you can find the source code of this blog.
     </p>
     <p>
-      You can also see <Link href='/contact'>all my links</Link> or check my resume
-      below
+      You can also see <Link href='/contact'>all my links</Link>.
     </p>
-    <CvDownload />
   </section>
 
   <section class='quick-links'>
